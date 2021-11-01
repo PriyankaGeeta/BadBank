@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const url         = 'mongodb+srv://Piya:<password>@cluster0.dv6e5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const url         = 'mongodb+srv://Piya:piya213@cluster0.dv6e5.mongodb.net/badbank?retryWrites=true&w=majority';
 let db            = null;
  
 // connect to mongo
@@ -13,7 +13,7 @@ MongoClient.connect(url, {useUnifiedTopology: true}, function(err, client) {
 // create user account
 function create(name, email, password, balance){
     return new Promise((resolve, reject) => {    
-        const collection = db.collection('accounts');
+        const collection = db.collection('data');
         balance = parseInt(balance);
         const doc = {name, email, password, balance};
         collection.insertOne(doc, {w:1}, function(err, result) {
@@ -25,7 +25,7 @@ function create(name, email, password, balance){
 // deposit into database
 function deposit(email, balance) {
     return new Promise((resolve, reject) => {
-        const collection = db.collection('accounts');        
+        const collection = db.collection('data');        
         balance = parseInt(balance);
         collection.updateOne(
                 {"email":email}, 
@@ -38,7 +38,7 @@ function deposit(email, balance) {
 // withdraw from database
 function withdraw(email, balance) {
     return new Promise((resolve, reject) => {
-        const collection = db.collection('accounts');        
+        const collection = db.collection('data');        
         balance = -parseInt(balance);
         collection.updateOne(
                 {"email":email}, 
@@ -51,7 +51,7 @@ function withdraw(email, balance) {
 // find user account balance
 function balance(email) {
     return new Promise((resolve, reject) => {
-        const collection = db.collection('accounts');        
+        const collection = db.collection('data');        
         collection.find({"email":email})
             .toArray(function(err, docs) {
                 err ? reject(err) : resolve(docs);
@@ -62,7 +62,7 @@ function balance(email) {
 // find user with given email and password, returns an empty array if doesn't exist
 function login(email, password) {
     return new Promise((resolve, reject) => {
-        const collection = db.collection('accounts');        
+        const collection = db.collection('data');        
         collection.find({
             $and: [
                 {"email": {$eq: email}}, 
@@ -79,7 +79,7 @@ function login(email, password) {
 function find(email){
     return new Promise((resolve, reject) => {    
         const customers = db
-            .collection('accounts')
+            .collection('data')
             .find({"email": email})
             .toArray(function(err, docs) {
                 err ? reject(err) : resolve(docs);
@@ -91,7 +91,7 @@ function find(email){
 function all(){
     return new Promise((resolve, reject) => {    
         const customers = db
-            .collection('accounts')
+            .collection('data')
             .find({},{_id : false})
             .toArray(function(err, docs) {
                 err ? reject(err) : resolve(docs);
