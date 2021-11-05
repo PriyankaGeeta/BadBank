@@ -21,10 +21,17 @@ function Withdraw() {
 
 
     function validateAmount(e){
-        if (e.currentTarget.value <= 0) {
-            setStatus("Amount cannot be negative");
+        if (isNaN(+e.currentTarget.value)){
+            setStatus("ERROR : NAN! Amount entered should be a Number");
             setEnableButton(false)
-            setTimeout(() => setStatus(""), 1000);
+            setTimeout(() => setStatus(""), 3000);
+            return;
+        }
+
+        if (e.currentTarget.value <= 0) {
+            setStatus("ERROR : Amount cannot be negative");
+            setEnableButton(false)
+            setTimeout(() => setStatus(""), 3000);
             
         }
         
@@ -39,7 +46,7 @@ function Withdraw() {
     function withdrawAmount() {
         if (ctx.user!=='') { 
         if (ctx.balance > dbbalance){
-            setStatus("Transaction Failed, Amount greater than current Balance");
+            setStatus("ERROR: Transaction Failed, Amount greater than current Balance");
             setTimeout(() => setStatus(""), 3000);
             return;
         }
