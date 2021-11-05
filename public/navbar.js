@@ -33,6 +33,8 @@ function NavBar(){
       }
     }
 
+
+
     return(
       <>
       <nav className="navbar navbar-expand-md navbar-light bg-light">
