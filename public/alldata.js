@@ -1,5 +1,5 @@
 function AllData() {
-    const [data, setData] = React.useState('');
+    const [data, setData] = React.useState([]);
     
 
     React.useEffect(() => {
@@ -8,27 +8,44 @@ function AllData() {
         fetch('/account/all')
             .then(response => response.json())
             .then(data => {
+                    
+                    setData(data);
                     console.log(data);
-                    setData(JSON.stringify(data));
 
             });
     }, []);
 
+    function renderTableData(){
+       return(
+                data.map((num, index)=>
+                (
+                  <tr key={index}>
+                      <td>{num.name}</td>
+                        <td>{num.email}</td>
+                        <td>{num.password}</td>
+                  </tr>
+                ))
+            )
+        }
+
+
     return (
         <Card
-            bgcolor="secondary"
+            bgcolor="primary"
             header="All Data"
-            text={data}
+            text=""
             status=""
             body={
-                <CardForm
-                    showName="none"
-                    showEmail="none"
-                    showPassword="none"
-                    showAmount="none"
-                    buttonType="button"
-                    buttonName="Show All Data"           
-                />
+                <table className="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Password</th>
+                        </tr>
+                    </thead>
+                    <tbody>{renderTableData()}</tbody>
+                </table>
             }
         />
     )
