@@ -10,10 +10,10 @@ function CreateAccount(props){
   
 
     function nameSubmit(e){
-        if(e.currentTarget.value.length < 4) {
+        if(e.currentTarget.value == '') {
             setValidName(false);
-            setStatus("Name must be minimum 4 character")
-        //   ctx.name=e.currentTarget.value;
+            setStatus("ERROR : Name cannot be blank")
+       
         } 
         else {
                 ctx.name=e.currentTarget.value;
@@ -26,12 +26,12 @@ function CreateAccount(props){
       function emailSubmit(e){
         if(e.currentTarget.value == '') {
             setValidEmail(false);
-        //   ctx.email=e.currentTarget.value;
+        
         } else {
             ctx.email=e.currentTarget.value;
             let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if (!regEmail.test(ctx.email)){
-                setStatus("Enter the valid email id!")
+                setStatus("ERROR : Enter the valid email id!")
             }
             else{
             setStatus("")
@@ -42,10 +42,10 @@ function CreateAccount(props){
       }
       
       function passwordSubmit(e){
-        if(e.currentTarget.value.length < 5 ) {
+        if(e.currentTarget.value.length < 8 ) {
             setValidPassword(false);
-            setStatus("Password must be minimum 6 character")
-        //   ctx.password=e.currentTarget.value;
+            setStatus("ERROR : Password must be minimum 8 character")
+        
         } else {
             ctx.password=e.currentTarget.value;
             
@@ -122,5 +122,4 @@ function Success(props) {
         </>
     )
 }
-  
-  
+ 
