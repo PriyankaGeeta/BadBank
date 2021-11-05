@@ -4,7 +4,7 @@ BAD BANK
 
 ## Description
 
-A single page bank application without any minimum security or authentication. It includes a Home card, A Create Account card which anyone can access , A simple login , Deposit card, Withdraw card  and all data Card showing all details of all user except balance. 
+A single page bank application with any minimum security or authentication. It includes a Home card, A Create Account card which anyone can access , A simple login , Deposit card, Withdraw card  and all data Card showing all details except balance of all users . 
 
 Deposit and withdrawal can be done only if you have already logged in.
 
