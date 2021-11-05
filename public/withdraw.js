@@ -1,7 +1,9 @@
 function Withdraw() {
     const ctx = React.useContext(UserContext); 
     const [status, setStatus]     = React.useState(true);
-    const [balance,setBalance] = React.useState(0)
+    const [balance,setBalance] = React.useState("");
+    const [dbbalance,setdbbalance] = React.useState(0);
+    const [enableButton, setEnableButton] = React.useState(false);
     
     function fetchAccount() {
         if (ctx.user!=='') { 
@@ -9,7 +11,8 @@ function Withdraw() {
         .then(response => response.json())
         .then(data => {
                 console.log(data);
-                setBalance('$' + data[0].balance);
+                setdbbalance(parseInt(data[0].balance))
+                setBalance('Your current balance is : $' + data[0].balance);
         });
         } 
     }
@@ -17,8 +20,30 @@ function Withdraw() {
     fetchAccount();
 
 
+    function validateAmount(e){
+        if (e.currentTarget.value <= 0) {
+            setStatus("Amount cannot be negative");
+            setEnableButton(false)
+            setTimeout(() => setStatus(""), 1000);
+            
+        }
+        
+        else{
+        ctx.balance=e.currentTarget.value;
+        setEnableButton(true)
+        }
+       
+    }
+
+
     function withdrawAmount() {
         if (ctx.user!=='') { 
+        if (ctx.balance > dbbalance){
+            setStatus("Transaction Failed, Amount greater than current Balance");
+            setTimeout(() => setStatus(""), 3000);
+            return;
+        }
+        else {
         setStatus(`$${ctx.balance} withdrawal successful!`);
         setTimeout(() => setStatus(''),2000);
 
@@ -29,7 +54,11 @@ function Withdraw() {
             var data = await res.json();
             console.log(data);
         })();
-        } else {
+        setEnableButton(false)
+        }
+    } 
+        
+        else {
             setStatus('Login to make a withdrawal');
             setTimeout(() => setStatus(''),3000);
         }
@@ -37,18 +66,17 @@ function Withdraw() {
 
     return (
         <Card
-            bgcolor="success"
+            bgcolor="danger"
             header="Withdraw"
             text={balance}
             status={status}
             body={
                 <>
-                <CardForm
-                    showName="none"
-                    showPassword="none"
-                    showEmail="none"
-                />
-                {<button type="submit" className="btn btn-light" onClick={withdrawAmount}>Withdraw</button>}
+                Amount
+                <br/>
+                <input type="number" className="form-control" placeholder="Enter amount" onChange={e => validateAmount(e) }/>
+                <br/>
+                {<button type="submit" className="btn btn-light" onClick={withdrawAmount} disabled={!enableButton}>Withdraw</button>}
                 </>
             }
         />
