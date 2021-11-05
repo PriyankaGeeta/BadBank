@@ -1,7 +1,60 @@
 function CreateAccount(props){
     const [show, setShow]     = React.useState(true);
     const [status, setStatus] = React.useState('');
-    const ctx = React.useContext(UserContext); 
+    const ctx = React.useContext(UserContext);
+    const [enableButton, setEnableButton] = React.useState(false);
+    const [validName,setValidName] = React.useState(false);
+    const [validEmail,setValidEmail] = React.useState(false);
+    const [validPassword,setValidPassword] = React.useState(false);
+
+  
+
+    function nameSubmit(e){
+        if(e.currentTarget.value.length < 4) {
+            setValidName(false);
+            setStatus("Name must be minimum 4 character")
+        //   ctx.name=e.currentTarget.value;
+        } 
+        else {
+                ctx.name=e.currentTarget.value;
+                setStatus("")
+            setValidName(true);
+        }
+        setEnableButton(validName && (validEmail && validPassword))
+      }
+    
+      function emailSubmit(e){
+        if(e.currentTarget.value == '') {
+            setValidEmail(false);
+        //   ctx.email=e.currentTarget.value;
+        } else {
+            ctx.email=e.currentTarget.value;
+            let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (!regEmail.test(ctx.email)){
+                setStatus("Enter the valid email id!")
+            }
+            else{
+            setStatus("")
+            setValidEmail(true);
+            }
+        }
+        setEnableButton(validEmail && (validName && validPassword))
+      }
+      
+      function passwordSubmit(e){
+        if(e.currentTarget.value.length < 5 ) {
+            setValidPassword(false);
+            setStatus("Password must be minimum 6 character")
+        //   ctx.password=e.currentTarget.value;
+        } else {
+            ctx.password=e.currentTarget.value;
+            
+            setValidPassword(true);
+            setStatus("")
+        }
+        setEnableButton(validPassword && (validEmail && validName ))
+      }
+      
 
     function addUser() {
         ctx.balance = '0';
@@ -30,7 +83,7 @@ function CreateAccount(props){
 
     return (
         <Card
-            bgcolor="primary"
+            bgcolor="warning"
             header="Create Account"
             text=""
             status={status}
@@ -38,8 +91,18 @@ function CreateAccount(props){
                 <>
                 {show ? 
                 <>
-                <CardForm setShow={setShow} showAmount="none"/> 
-                {<button type="submit" className="btn btn-light" onClick={addUser}>Create Account</button>}
+                Name
+                 <input type="input" className="form-control" id="name" placeholder="Enter name" onChange={e => nameSubmit(e)}/>
+                 <br/>
+                    Email address
+                <br/>
+                <input type="input" className="form-control" id="email" placeholder="Enter email" onChange={e => emailSubmit(e)} />
+                <br/>
+                Password
+                <br/>
+                <input type="password" className="form-control" id="password" placeholder="Enter password" onChange={e => passwordSubmit(e)} />
+                <br/>
+                <button type="submit" className="btn btn-light" onClick={addUser} disabled={!enableButton}>Create Account</button>
                 </>
                 : 
                 <Success setShow={setShow}/>}
@@ -59,4 +122,5 @@ function Success(props) {
         </>
     )
 }
+  
   
