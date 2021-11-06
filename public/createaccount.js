@@ -10,51 +10,63 @@ function CreateAccount(props){
   
 
     function nameSubmit(e){
-        if(e.currentTarget.value == '') {
+        if(e.currentTarget.value == '' && (validEmail && validPassword)) {
             setValidName(false);
             setStatus("ERROR : Name cannot be blank")
-       
+            setEnableButton(false)
         } 
-        else {
-                ctx.name=e.currentTarget.value;
-                setStatus("")
+        if(e.currentTarget.value.length > 0 && (validEmail && validPassword) ) {
+            ctx.name=e.currentTarget.value;
+            setStatus("")
             setValidName(true);
+            setEnableButton(true)
         }
-        setEnableButton(validName && (validEmail && validPassword))
+        
       }
     
       function emailSubmit(e){
-        if(e.currentTarget.value == '') {
+        if(e.currentTarget.value == ''  && (validName && validPassword)) {
             setValidEmail(false);
+            setStatus("ERROR : Email cannot be blank");
+            setEnableButton(false)
+            
+        } 
         
-        } else {
+        if(e.currentTarget.value.length > 0  && (validName && validPassword))  {
             ctx.email=e.currentTarget.value;
             let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if (!regEmail.test(ctx.email)){
                 setStatus("ERROR : Enter the valid email id!")
+                setValidEmail(false);
+                setEnableButton(false)
             }
             else{
             setStatus("")
             setValidEmail(true);
+            setEnableButton(true)
             }
         }
-        setEnableButton(validEmail && (validName && validPassword))
+        
       }
       
       function passwordSubmit(e){
-        if(e.currentTarget.value.length < 8 ) {
+        if((e.currentTarget.value.length <= 7) && validEmail && validName) {
             setValidPassword(false);
             setStatus("ERROR : Password must be minimum 8 character")
-        
-        } else {
-            ctx.password=e.currentTarget.value;
-            
+            setEnableButton(false)
+        } 
+        if((e.currentTarget.value.length > 7) && validEmail && validName ){
             setValidPassword(true);
             setStatus("")
+            ctx.password=e.currentTarget.value;
+            setEnableButton(true)
+            
         }
-        setEnableButton(validPassword && (validEmail && validName ))
+        
+        
+        
       }
-      
+    
 
     function addUser() {
         ctx.balance = '0';
@@ -122,4 +134,5 @@ function Success(props) {
         </>
     )
 }
- 
+  
+  
