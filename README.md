@@ -8,17 +8,21 @@ A single page bank application with any minimum security or authentication. It i
 
 Deposit and withdrawal can be done only if you have already logged in.
 
-## Getting Started
 
-### Dependencies
+
+### Technology used:
 
 * npm 
+* node
+* express
+* mongo
+* aws EC2
 
-### Installing
+### Installing:
 
 * download or fork this repository 
 
-### Executing program
+### Installation Guidelines:
 
 * To run the program locally, open your cmd/anaconda cmd and run below commands
 ```
@@ -27,7 +31,14 @@ npm install
 node index.js
 
 ```
+### Features: 
 
+* sign up
+* login
+* deposit
+* withdrawl
+* all data
 
+### License:
 
 This project is licensed under the MIT License - see the LICENSE.md file for details
